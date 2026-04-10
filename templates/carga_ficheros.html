@@ -1,0 +1,253 @@
+{% extends 'base.html'%}
+
+{% block title %}Carga de ficheros{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/carga_ficheros.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <!--h1 class="mb-4">PadronOnline - ETL</h1>-->
+
+    <!-- Acordeón: Carga de ficheros ZIPs -->
+    <div class="accordion mb-4" id="accordionUploadZip">
+
+        <div class="accordion-item">
+
+            <!-- Cabecera convertible en acordeón -->
+            <h2 class="accordion-header" id="headingUploadZip">
+                <button class="accordion-button" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseUploadZip"
+                        aria-expanded="true" aria-controls="collapseUploadZip">
+
+                    <strong>Carga de ficheros ZIPs</strong>
+
+                </button>
+            </h2>
+
+            <!-- Contenido del acordeón -->
+            <div id="collapseUploadZip"
+                 class="accordion-collapse collapse show"
+                 aria-labelledby="headingUploadZip"
+                 data-bs-parent="#accordionUploadZip">
+
+                <div class="accordion-body">
+
+                    <!-- Zona de arrastre -->
+                    <div id="dropZone" class="mb-3">
+                        <i class="bi bi-cloud-arrow-up fs-1"></i>
+                        <p class="mt-2 mb-0">Arrastra varios archivos aquí o usa el botón superior</p>
+                    </div>
+
+                    <!-- Formulario de selección -->
+                    <!-- NOTA: El form ya NO hace submit. Opción B = acumulación hasta pulsar botón -->
+                    <form id="uploadForm" onsubmit="return false;">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-5 d-flex">
+                                <input type="file" id="fileInput" name="files" multiple accept=".zip"
+                                       class="form-control me-2"/>
+                                <button type="button" id="btnStartUpload"
+                                    class="btn btn-sm btn-info"
+                                    style="width: 37px; height: 37px;"
+                                    data-bs-toggle="tooltip" data-bs-placement="auto"
+                                    title="Subir ficheros al servidor para procesarlos">
+                                    <i class="bi bi-upload"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Contenedor de progreso -->
+                    <div id="progressContainer"></div>
+
+                    <!-- Estado final -->
+                    <div id="uploadStatus"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Acordeón Principal que envuelve toda la tarjeta -->
+    <!-- (EL RESTO DEL HTML LO MANTENGO EXACTAMENTE IGUAL, SIN ELIMINAR NADA) -->
+
+    <div class="accordion mb-4" id="accordionCard">
+
+        <div class="accordion-item">
+            <!-- Cabecera convertida en acordeón -->
+            <h2 class="accordion-header" id="headingCard">
+                <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseCard"
+                        aria-expanded="false" aria-controls="collapseCard">
+                    <strong>Ficheros soportados</strong>
+                </button>
+            </h2>
+
+            <!-- Contenido que se oculta/muestra -->
+            <div id="collapseCard" class="accordion-collapse collapse"
+                 aria-labelledby="headingCard" data-bs-parent="#accordionCard">
+
+                <div class="accordion-body">
+
+                    <!-- Acordeón interno -->
+                    <div class="accordion" id="accordionFicheros">
+
+                        <!-- Ficheros aportados por el INE -->
+                        <!-- NO MODIFICO NINGUNA LÍNEA DE TU ESTRUCTURA ORIGINAL -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingINE">
+                                <button class="accordion-button collapsed" type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#ficherosINE"
+                                        aria-expanded="false"
+                                        aria-controls="ficherosINE">
+                                    Aportados por el INE (ppmmmIAPO.zip)
+                                </button>
+                            </h2>
+
+                            <div id="ficherosINE"
+                                 class="accordion-collapse collapse"
+                                 aria-labelledby="headingINE">
+
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>HCppmmm.025, registros afectados del fichero de hogares que sean
+                                            establecimientos colectivos según la información recogida por el INE.
+                                        </li>
+                                        <li>HDppmmm.025, registros afectados del fichero de hogares con dirección
+                                            padronal.
+                                        </li>
+                                        <li>HHppmmm.025, totalidad del fichero de hogares.</li>
+                                        <li>HSppmmm.025, registros del fichero de hogares sin CIV.</li>
+                                        <li>HVppmmm.025, registros afectados del fichero de hogares con código de vía
+                                            INE y sin código de vía de catastrato.
+                                        </li>
+                                        <li>PPppmmm.025, registros de personas.</li>
+                                        <li>VCppmmm.025, registros afectados del fichero de viviendas con dirección
+                                            catastral.
+                                        </li>
+                                        <li>VVppmmm.025, fichero completo de viviendas del municipio.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ficheros aportados por los municipios -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingMunicipios">
+                                <button class="accordion-button collapsed" type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#ficherosMunicipios"
+                                        aria-expanded="false"
+                                        aria-controls="ficherosMunicipios">
+                                    Aportados por la entidad beneficiaria (ENTREGAppmmm.zip)
+                                </button>
+                            </h2>
+
+                            <div id="ficherosMunicipios"
+                                 class="accordion-collapse collapse"
+                                 aria-labelledby="headingMunicipios">
+
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>A1HSppmmmA.025, registros de hogares con CIV cumplimentado o indicación de
+                                            baja.
+                                        </li>
+                                        <li>A1VAppmmmA.025, registros de alta del fichero de alta de viviendas con CIV
+                                            nuevo.
+                                        </li>
+                                        <li>A2HDppmmmA.025, registros afectados del fichero de hogares con dirección
+                                            padronal con propuesta de modificación de CIV.
+                                        </li>
+                                        <li>A2VAppmmmA.025, registros de alta del fichero de alta de viviendas con CIV
+                                            nuevo. (Tarea A2 - Registros con dirección padronal y catastral diferente)
+                                        </li>
+                                        <li>A3VCppmmmA.025, registros afectados del fichero de viviendas con dirección
+                                            catastral y código de vía INE o Código de Unidad Poblacional.
+                                        </li>
+                                        <li>A4HVppmmmA.025, registros afectados del fichero de hogares con código de vía
+                                            INE y con código de vía de catastro.
+                                        </li>
+                                        <li>A5HAppmmmA.025, registros de hogares que se separan con los diferentes CIV
+                                            propuestos que conforman cada uno de ellos.
+                                        </li>
+                                        <li>A6HMppmmmA.025, registros de hogares con correcciones no contempladas en
+                                            A1-A5.
+                                        </li>
+                                        <li>A6VMppmmmA.025, registros de viviendas con correcciones no contempladas en
+                                            A1-A5.
+                                        </li>
+                                        <li>BVAppmmmA.025, registros de alta del fichero de alta de viviendas con CIV
+                                            nuevo.
+                                        </li>
+                                        <li>CHCppmmmA.025, registros afectados del fichero de hogares que sean
+                                            establecimientos colectivos según comprobaciones del Ayuntamiento.
+                                        </li>
+                                        <li>ACTUACION1ppmmm.pdf, contiene la información especificada en el Anexo del
+                                            documento para Entidades Beneficiarias.
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> <!-- FIN acordeón interno -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Procesamiento de tareas -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <div class="row g-3">
+                <div class="col-md-1 d-flex align-items-center justify-content-left">
+                    <strong>Tareas</strong>
+                </div>
+                <div class="col-md-10 d-flex align-items-center justify-content-center">
+                        <!-- <i>Pasos...&nbsp;</i>--> ➊ En cola ➟ ➋ Extracción ZIP ➟ ➌ Conversión UTF-8 ➟ ➍ Comprobación CSV ➟ ➎ Generación CTL ➟ ➏ Carga CTL ➟ ➐ Finalizada
+
+                </div>
+                <div class="col-md-1 d-flex align-items-center justify-content-end">
+                    <button type="button" id="btnDataDelete" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="auto" title="Elimina todos los datos cargados previamente">
+                        <i class="bi bi-database-dash"></i>
+                    </button>
+                    &nbsp;&nbsp;&nbsp;
+                    <button type="button" id="btnDeleteAll" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" data-bs-placement="auto" title="Eliminar todas las tareas">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card-body">
+            <table class="table table-sm table-striped" id="tasksTable">
+                <thead class="table-dark">
+                <tr>
+                    <th class="col-md-3 text-center">ID</th>
+                    <th class="col-md-2 text-center">Archivo</th>
+                    <th class="col-md-2 text-center">Estado</th>
+                    <th class="col-md-3 text-center">Detalle/Salida</th>
+                    <th class="col-md-2 text-center">Acciones</th>
+                </tr>
+                </thead>
+                <tbody id="tasksBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/carga_ficheros.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Explorador de subidas{% endblock %}
+
+{% block content %}
+
+<!-- Contenedor para las migas de pan -->
+<nav aria-label="breadcrumb">
+  <ol id="breadcrumb-secundario" class="breadcrumb"></ol>
+</nav>
+
+<!-- Lista de elementos -->
+<ul id="uploadList" class="list-group"></ul>
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/breadcrumb.js') }}"></script>
+<script src="{{ url_for('static', filename='js/consulta_subidas.js') }}"></script>
+{% endblock %}

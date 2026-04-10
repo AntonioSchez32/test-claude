@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% set hide_layout = True %}
+
+{% block title %}Login - PadronOnline{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="login-wrapper d-flex align-items-center justify-content-center">
+
+    <div class="card login-card shadow-lg border-0">
+
+        <div class="text-center mt-4">
+            <!-- Logo opcional -->
+            <img src="{{ url_for('static', filename='img/logoINE.svg') }}"
+                 alt="Logo" class="login-logo mb-3">
+        </div>
+
+        <div class="card-body">
+
+            <h3 class="text-center mb-4 fw-bold">
+                <i class="bi bi-box-arrow-in-right"></i> PadronOnLine
+            </h3>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert alert-danger text-center" role="alert">
+                        {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST">
+
+                <div class="mb-3">
+                    <label class="form-label">Usuario</label>
+                    <input type="text" name="username" class="form-control form-control-lg" required autofocus>
+                           <!-- title="Introduzca su nombre de usuario" data-bs-toggle="tooltip" data-bs-placement="right"> -->
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" name="password" class="form-control form-control-lg" required>
+                           <!-- title="Introduzca su contraseña" data-bs-toggle="tooltip" data-bs-placement="right"> -->
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100 shadow-sm">
+                    Entrar
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

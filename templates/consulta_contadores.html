@@ -1,0 +1,168 @@
+{% extends 'base.html'%}
+
+{% block title %}Consulta de contadores{% endblock %}
+
+{% block content %}
+
+    <form method="POST" id="viewForm">
+        <div class="mb-3">
+            <label class="form-label">Selecciona una vista:</label>
+            <select name="db_view" class="form-select" onchange="document.getElementById('viewForm').submit()">
+                <option value="">-- Seleccionar --</option>
+                {% for v in vistas %}
+                <option value="{{ v }}" {% if selected_view== v %}selected{% endif %}>
+                    {% if v == "VW_CONTADORES_INE" %}
+                    Contadores INE (totales)
+                    {% elif v == "VW_CONTADORES_INE_POR_CMUN" %}
+                    Contadores INE (desglosados)
+                    {% elif v == "VW_CONTADORES_MUN" %}
+                    Contadores de entidad beneficiaria (totales)
+                    {% elif v == "VW_CONTADORES_MUN_POR_CMUN" %}
+                    Contadores de entidad beneficiaria (desglosado)
+                    {% else %}
+                    {{ v }}
+                    {% endif %}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- button type="submit" class="btn btn-primary">Cargar datos</button -->
+
+        {% if csv_data %}
+        <!-- ✅ Ajuste: incluir el parámetro view -->
+        <!-- <a href="{{ url_for('download_csv', view=selected_view) }}" class="btn btn-success ms-2 btn-icon"><i class="bi bi-file-earmark-spreadsheet"></i>⬇ Descargar CSV</a> -->
+        <a href="{{ url_for('download_csv', view=selected_view) }}" class="btn btn-success ms-2 btn-icon"><i
+                class="bi bi-file-earmark-spreadsheet"></i>Descargar CSV</a>
+        {% endif %}
+    </form>
+
+    {% if csv_data %}
+    <hr>
+    <h4>
+        {% if selected_view == "VW_CONTADORES_INE" %}<span>Contadores INE (totales)</span>
+        {% elif selected_view == "VW_CONTADORES_INE_POR_CMUN" %}Contadores INE (desglosados)
+        {% elif selected_view == "VW_CONTADORES_MUN" %}Contadores de entidades beneficiarias (totales)
+        {% elif selected_view == "VW_CONTADORES_MUN_POR_CMUN" %}Contadores de entidades beneficiarias
+        (desglosado)
+        {% else %}{{ selected_view }}
+        {% endif %}
+    </h4>
+
+    <div class="table-responsive mt-3">
+        <table class="table table-sm table-striped table-bordered align-middle">
+            <thead>
+            <tr>
+                {% for header in csv_data[0].split(';') %}
+                <th>{{ header }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in csv_data[1:] %}
+            <tr>
+                {% for cell in row.split(';') %}
+                <td data-value="{{ cell }}">{{ cell }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if selected_view == "VW_CONTADORES_INE" or selected_view == "VW_CONTADORES_INE_POR_CMUN" %}
+    <figcaption class="legend-text mt-4">
+        <h6>Leyenda de cabecera</h6>
+
+        <div class="d-flex flex-column gap-2 mt-2">
+
+            {% if selected_view == "VW_CONTADORES_INE_POR_CMUN" %}
+            <div>CMUN - Código de municipio.</div>
+            {% endif %}
+            <div>HH - Totalidad del fichero de hogares.</div>
+            <div>HC - Registros afectados del fichero de hogares que sean establecimientos colectivos según la
+                información recogida por el INE.
+            </div>
+            <div>HD - Registros afectados del fichero de hogares con dirección padronal.</div>
+            <div>HS - Registros del fichero de hogares sin CIV.</div>
+            <div>HV - Registros afectados del fichero de hogares con código de vía INE y sin código de vía de
+                catastro.
+            </div>
+            <div>PP - Totalidad del fichero de personas.</div>
+            <div>VC - Registros afectados del fichero de viviendas con dirección catastral.</div>
+            <div>VV - Totalidad del fichero de viviendas.</div>
+
+        </div>
+    </figcaption>
+    {% elif selected_view == "VW_CONTADORES_MUN" or selected_view == "VW_CONTADORES_MUN_POR_CMUN" %}
+    <figcaption class="legend-text mt-4">
+        <h6>Leyenda de cabecera</h6>
+
+        <div class="d-flex flex-column gap-2 mt-2">
+            {% if selected_view == "VW_CONTADORES_MUN_POR_CMUN" %}
+            <div>CMUN - Código de municipio</div>
+            {% endif %}
+            <div>A1HS - Contador del fichero A1HSppmmmA.025, registros de hogares con CIV cumplimentado o
+                indicación de
+                baja.
+            </div>
+            <div>A1VA - Contador del fichero A1VAppmmmA.025, registros de alta del fichero de alta de viviendas
+                con CIV
+                nuevo, caso de existir.
+            </div>
+            <div>A2HD - Contador del fichero A2HDppmmmA.025, registros afectados del fichero de hogares con
+                dirección
+                padronal con propuesta de moficiación de CIV.
+            </div>
+            <div>A2VA - Contador del fichero A2VAppmmmA.025, registros de alta del fichero de alta de viviendas
+                con CIV
+                nuevo, caso de existir. (Tarea A2 - Registros con dirección padronal y catastral diferente)
+            </div>
+            <div>A3VC - Contador del fichero A3VCppmmmA.025, registros afectados del fichero de viviendas con
+                dirección
+                catastral y código de vía INE o Código de Unidad Poblacional.
+            </div>
+            <div>A4HV - Contador del fichero A4HVppmmmA.025, registros afectados del fichero de hogares con
+                código de
+                vía INE y con código de vía de catastro.
+            </div>
+            <div>A5HA - Contador del fichero A5HAppmmmA.025, registros de hogares que se separan con los
+                diferentes CIV
+                propuestos que conforman cada uno de ellos.
+            </div>
+            <div>A6HM - Contador del fichero A6HMppmmmA.025, registros de hogares en donde se han realizado
+                correcciones
+                que sean diferentes a las mencionadas en los apartados A1 a A5.
+            </div>
+            <div>A6VM - Contador del fichero A6VMppmmmA.025, registros de viviendas en donde se han realizado
+                correcciones que sean diferentes a las mencionadas en los apartados A1 a A5.
+            </div>
+            <div>BVA - Contador del fichero BVAppmmmA.025, registros de alta del fichero de alta de vivinedas
+                con CIV
+                nuevo, caso de existir
+            </div>
+            <div>CHC - Contador del fichero CHCppmmmA.025, registros afectados del fichero de hogares que sean
+                establecimientos colectivos según las comprobaciones y posibles nuevas altas realizadas por los
+                Aytos.
+            </div>
+        </div>
+    </figcaption>
+    {% else %}
+    {% endif %}
+    {% endif %}
+    <!--
+    (Tarea A1 - Hogares sin CIV)
+    (Tarea A2 - Registros con dirección padronal y catastral diferente)
+    (Tarea A3 - Registros del fichero de viviendas sin código vía INE)
+    (Tarea A4 - Registros del fichero de hogares sin código vía Catastro)
+    (Tarea A5 - Separación de hogares)
+    (Tarea A6 - Mejora de ficheros de hogares y viviendas)
+    (Tarea B  - Completar la información territorial)
+    (Tarea C  - Mejora de ficheros de hogares y viviendas)
+    -->
+
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/contadores.js') }}"></script>
+{% endblock %}

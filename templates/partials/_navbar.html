@@ -1,0 +1,68 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top">
+    <div class="container-fluid">
+        <div class="d-flex align-items-center navbar-brand">
+            <a href="https://www.ine.es/padrononline" class="me-2 enlace_no_resaltado" target="_blank">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" class="logo_padron"
+                     alt="Logotipo" title="Padrón Online" height="40">
+            </a>
+            <a href="https://www.ine.es/" class="enlace_no_resaltado" target="_blank">
+                <img src="{{ url_for('static', filename='img/logoINE.svg') }}" class="logo_ine"
+                     alt="Logotipo INE" title="Ir a INE">
+            </a>
+        </div>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/carga_ficheros' %}active{% endif %}"
+                       href="{{ url_for('dashboard') }}">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/carga_ficheros' %}active{% endif %}"
+                       href="{{ url_for('carga_ficheros') }}">Carga de ficheros</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/consulta_contadores' %}active{% endif %}"
+                       href="{{ url_for('consulta_contadores') }}">Consulta de contadores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/valoracion_tareas' %}active{% endif %}"
+                       href="{{ url_for('valoracion_tareas') }}">Valoración de tareas</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                {% if logged_in %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center"
+                       href="#"
+                       id="userDropdown"
+                       role="button"
+                       data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle me-1"></i>
+                        {{ username|upper }}
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                        <li class="dropdown-item-text small text-muted">
+                            Sesión iniciada por {{full_name}}
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li>
+                            <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
+                                <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

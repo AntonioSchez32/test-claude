@@ -1,0 +1,58 @@
+{% extends 'base.html'%}
+
+{% block title %}Visor de Log (Últimas líneas) - padrononline.log{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>padrononline.log</h1>
+    <p class="info">
+        Última actualización: <span id="now">{{ now }}</span> |
+        Total de líneas: {{ total }} |
+        Mostrando: {{ lines|length }} líneas
+    </p>
+
+    <form class="search-form" method="get">
+        <input type="text" name="search" placeholder="Buscar en el log..." value="{{ search }}" autofocus/>
+        <button type="submit">Buscar</button>
+        {% if search %}
+        <a href="/" style="margin-left:10px; color:#e74c3c; text-decoration:none;">Limpiar</a>
+        {% endif %}
+    </form>
+
+    <div class="auto-refresh">
+        <label><input type="checkbox" id="autoRefresh" checked> Auto-actualizar cada 1s</label>
+    </div>
+
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% else %}
+    <div class="log" id="logContainer">
+        {% for line in lines %}
+        <pre><span class="line-number">{{ line_start - loop.index }}:</span>{{ line | safe }}</pre>
+        {% endfor %}
+    </div>
+
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="?page={{ page - 1 }}{% if search %}&search={{ search }}{% endif %}">Más antiguas →</a>
+        {% endif %}
+
+        <span>Página {{ page }} de {{ total_pages }}</span>
+
+        {% if page > 1 %}
+        <a href="?page=1{% if search %}&search={{ search }}{% endif %}">← Más recientes</a>
+        {% else %}
+        <span style="color:#666;">(Página actual)</span>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="footer">
+        Visor de logs en tiempo real • Orden inverso • Últimas líneas primero
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/log_viewer.js') }}"></script>
+{% endblock %}

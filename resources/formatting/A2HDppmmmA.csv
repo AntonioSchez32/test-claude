@@ -1,0 +1,34 @@
+CAMPO;DESCRIPCION;TIPO;LONGITUD;POSICION INICIAL;POSICION FINAL
+CIV;Código de Identificación de la Vivienda;VARCHAR2;24;1;24
+COLECTIVO;0: No es establecimiento colectivo 1 : Si es establecimiento colectivo convencional 8: Si es vivienda alquilada por habitaciones;VARCHAR2;1;25;25
+HOGAR;Identificador del hogar (campo vivienda del fichero censal de personas);VARCHAR2;9;26;34
+CPRO;Código de provincia;NUMBER;2;35;36
+CMUN;Código de municipio;NUMBER;3;37;39
+DIST;Código de distrito;NUMBER;2;40;41
+SECC;Código de sección;NUMBER;3;42;44
+CUNN;Código de Unidad Poblacional;NUMBER;6;45;50
+NENTCO;Nombre de la Entidad Colectiva;VARCHAR2;50;51;100
+NENTSI;Nombre de la Entidad Singualar;VARCHAR2;50;101;150
+NNUCLE;Nombre del Núcleo/Diseminado;VARCHAR2;50;151;200
+CVIA;Código de vía INE;NUMBER;5;201;205
+TVIA;Tipo de vía;NUMBER;5;206;210
+NVIA;Nombre de Vía;VARCHAR2;50;211;260
+NUMERN;Número;VARCHAR2;5;261;265
+NUMERSN;Número Superior;VARCHAR2;5;266;270
+KMTN;Kilómetro;NUMBER;3;271;273
+HMTN;Hectómetro;NUMBER;1;274;274
+BLOQN;Bloque;VARCHAR2;2;275;276
+PORTN;Portal;VARCHAR2;2;277;278
+ESCAN;Escalera;VARCHAR2;2;279;280
+PLANN;Planta;VARCHAR2;3;281;283
+PUERN;Puerta;VARCHAR2;4;284;287
+CVIA_DGC;Código de vía de Catastro;NUMBER;5;288;292
+APP_CE;Identificador de Aproximación Postal de Censo Electoral;NUMBER;10;293;302
+HUECO_CE;Identificador de Hueco de Censo Electoral;NUMBER;10;303;312
+CODIGO_EATIM;Código de Entidad de Ámbito Territorial Menor que el Municipio;NUMBER;8;313;320
+NOMBRE_EATIM;Nombre de Entidad de Ámbito Territorial Menor que el Municipio;VARCHAR2;50;321;370
+NUMERS_COHERENTE;Número superior coherente;VARCHAR2;1;371;371
+KMT_COHERENTE;Kilómetro coherente;VARCHAR2;1;372;372
+PLANTA_COHERENTE;Planta coherente;VARCHAR2;1;373;373
+PUERTA_COHERENTE;Puerta coherente;VARCHAR2;1;374;374
+CIV_PRO;Propuesta de nuevo Código de Identificación de la Vivienda;VARCHAR2;24;375;398

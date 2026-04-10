@@ -1,0 +1,10 @@
+Copia el código en la ruta C:\desarrollo\python\padrononline_pipeline
+
+Se necesita...
+
+ - Instalar OracleXE en la ruta C:\desarrollo\oracle (porque tengo C:\desarrollo\oracle\product\21c\oradata\XE\ en el DDL) y con contraseña que solemos usar en algunos casos muyfacil....
+ - Instalar Python 3.13.1 (no superior), porque compruebo usuario por LDAP para que nadie que no sea del INE pueda acceder a la app web.
+ - Instalar OpenSSL y añadir la ruta a openssl.exe al PATH
+ - Adaptar un fichero de carga SQL con la información de habitantes por municipio, para adaptarlo a vuestra provincia (Importar-MUNICIPIOS-csv_2025.10.08-12.45.40.sql)
+ - Y lanzar el .bat que crea la estructura de tablas en OracleXE, master_utf8.bat, que podéis encontrar en la ruta C:\desarrollo\python\padrononline_pipeline/resources/oracle/ddl.
+ - Como se usa SSL, también habría que generar nuevos ficheros cert.pem y key.pem de la carpeta /certs usando el fichero san.cnf (adaptado a vuestro caso), hay un fichero LEEME.md para hacer ésto también.

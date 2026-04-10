@@ -1,0 +1,35 @@
+body {
+    padding: 20px;
+}
+
+/* Estilo striped (filas alternadas) + hover */
+.table-striped tbody tr:nth-child(odd) {
+    background-color: #ffffff;      /* blanco */
+}
+
+.table-striped tbody tr:nth-child(even) {
+    background-color: #f1f3f5;      /* gris clarito */
+}
+
+/* Hover suave */
+.table-striped tbody tr:hover {
+    background-color: #e2e6ea;
+    cursor: pointer; /* opcional */
+}
+
+
+#tasksBody tr td {
+    font-size: 0.875rem !important;
+}
+
+.running {
+    background: #fff3cd;
+}
+
+.completed {
+    background: #d4edda;
+}
+
+.error {
+    background: #f8d7da;
+}

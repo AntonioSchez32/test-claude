@@ -1,0 +1,15 @@
+CAMPO;DESCRIPCION;TIPO;LONGITUD;POSICION INICIAL;POSICION FINAL
+NIDEN;Clave personas Padrón;NUMBER;10;1;10
+HOGAR;Identificador del hogar (campo vivienda del fichero censal de personas);VARCHAR2;9;11;19
+CPRO;Código de provincia;NUMBER;2;20;21
+CMUN;Código de municipio;NUMBER;3;22;24
+NOMBRE;Nombre;VARCHAR2;20;25;44
+APE1;Primer Apellido;VARCHAR2;25;45;69
+APE2;Segundo Apellido;VARCHAR2;25;70;94
+FNAC;Fecha de nacimiento;NUMBER;8;95;102
+SEXO;Sexo;VARCHAR2;1;103;103
+TIDEN;Tipo de Identificador;VARCHAR2;1;104;104
+LEXTR;Letra de Extranjero;VARCHAR2;1;105;105
+IDEN;Identificador;NUMBER;8;106;113
+LIDEN;Letra del DNI/NIEX;VARCHAR2;1;114;114
+NDOCU;Número de Documento;VARCHAR2;20;115;134

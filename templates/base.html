@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PadronOnline{% endblock %}</title>
+    <!-- Icono favicon.ico -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- CSS de bootstrap -->
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    {% block css %}
+    <!-- Contenido específico CSS de cada página -->
+    {% endblock %}
+</head>
+<body>
+
+{% if not hide_layout %}
+    <!-- Barras de navegación -->
+    {% include 'partials/_navbar.html' %}
+
+    <!-- Breadcrumbs -->
+    {% include 'partials/_breadcrumb.html' %}
+
+    <!-- Mensajes -->
+    {% include 'partials/_messages.html' %}
+{% endif %}
+
+<!-- Contenido de las tabs -->
+<!-- main></main> sustituido por el div -->
+<!-- <div class="container mt-4"> -->
+<div class="container">
+    {% block content %}
+    <!-- Contenido específico de cada página -->
+    {% endblock %}
+</div>
+
+<!-- Modal Bootstrap GENÉRICO -->
+<div class="modal fade" id="generalModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- HEADER -->
+            <div id="generalModalHeader" class="modal-header bg-primary text-white">
+                <h5 id="generalModalTitle" class="modal-title">Título</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- BODY -->
+            <div id="generalModalBody" class="modal-body">
+                Contenido del modal...
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" id="generalModalConfirmBtn" class="btn btn-primary">
+                    Aceptar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="ajaxLoader"
+     style="
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(255,255,255,0.6);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;">
+    <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem;">
+    </div>
+</div>
+
+
+<!-- Pié de págona -->
+<!--
+{% include 'partials/_footer.html' %}
+-->
+
+<!-- JS de bootstrap y jquery-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Script global para toda la aplicación -->
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
+{% block js %}
+<!-- Zona para definiciones de JS por página -->
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,375 @@
+{% extends 'base.html'%}
+
+{% block title %}Valoración de tareas{% endblock %}
+
+{% block content %}
+
+    <div class="d-flex align-items-center gap-3">
+
+        <!-- BOTÓN RECALCULAR -->
+        <button type="submit" form="form_caso"
+                name="action" value="recalcular"
+                class="btn btn-primary btn-icon">
+            <i class="bi bi-arrow-repeat"></i> Recalcular
+        </button>
+
+        {% if csv_data %}
+        <!-- BOTÓN DESCARGAR CSV -->
+        <a href="#"
+           class="btn btn-success ms-2 btn-icon"
+           onclick="exportTableToCSV('valoracionTareas', 'valoracion_tareas.csv')">
+            <i class="bi bi-file-earmark-spreadsheet"></i> Descargar CSV
+        </a>
+        {% endif %}
+
+        <!-- FORMULARIO SOLO PARA EL SELECT, A LA DERECHA -->
+        <form id="form_caso"
+              method="POST"
+              action="{{ url_for('valoracion_tareas') }}"
+              class="d-flex align-items-center gap-2 ms-auto">
+
+            <label class="form-label m-0 fw-semibold">Presenta actuación 2</label>
+
+            <input type="text"
+               name="presenta_actuacion_2"
+               class="form-control form-control-sm w-auto"
+               value="{{ 'SI' if selected_caso != '1' else 'NO' }}"
+               disabled = "disabled"
+               readonly
+               size="3">
+
+            {% if selected_caso != '1' %}
+            <label for="calidad_actuacion_2" class="form-label m-0 fw-semibold">Calidad actuación 2</label>
+
+            <select id="calidad_actuacion_2" name="calidad_actuacion_2"
+                    class="form-select form-select-sm w-auto"
+                    onchange="this.form.submit()">
+                <option value="ALTA" {{ 'selected' if not calidad_actuacion_2_media }}>ALTA</option>
+                <option value="MEDIA"{{ 'selected' if calidad_actuacion_2_media }}>MEDIA</option>
+            </select>
+            {% endif %}
+
+
+
+            <label for="caso" class="form-label m-0 fw-semibold">Seleccionar caso</label>
+
+            <select id="caso" name="caso"
+                    class="form-select form-select-sm w-auto"
+                    onchange="this.form.submit()">
+                <option value="1" {{ 'selected' if selected_caso == '1' else '' }}>CASO 1</option>
+                <option value="2" {{ 'selected' if selected_caso == '2' else '' }}>CASO 2</option>
+                <option value="3" {{ 'selected' if selected_caso == '3' else '' }}>CASO 3</option>
+            </select>
+        </form>
+
+    </div>
+
+    <table class="table table-bordered text-center align-middle my-4">
+        <thead class="table-light">
+            <tr>
+                <th rowspan="2" class="align-middle">Actuaciones</th>
+                <th rowspan="2" class="align-middle">Tareas</th>
+                <th colspan="3">Casos</th>
+            </tr>
+            <tr>
+                <th>Caso 1</th>
+                <th>Caso 2</th>
+                <th>Caso 3</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% if valoracion_criterios %}
+                {% for actuacion, info in valoracion_criterios.items() %}
+                    {% set row_span = info.filas|length %}
+
+                    <tr>
+                        <td rowspan="{{ row_span }}" class="table-light">
+                            <strong>{{ actuacion }}</strong><br>
+                            {{ info.descripcion }}
+                        </td>
+
+                        {% set tarea, valores, nota = info.filas[0] %}
+                        <td class="table-light">{{ tarea }}</td>
+                        {% for v in casos(valores, nota) %}
+                            <td>{{ v|safe }}</td>
+                        {% endfor %}
+                    </tr>
+
+                    {% for tarea, valores, nota in info.filas[1:] %}
+                    <tr>
+                        <td class="table-light">{{ tarea }}</td>
+                        {% for v in casos(valores, nota) %}
+                            <td>{{ v|safe }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+
+                {% endfor %}
+
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center text-muted"><i>No hay datos disponibles</i></td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <figcaption class="legend-text mt-4">
+        <!-- <h6>Leyenda de tareas</h6> -->
+
+        <div class="d-flex flex-column gap-2 mt-2">
+
+            <div><i>(*) En función del trabajo realizado, se puede cobrar: 100%, 66% o 33%<br/>
+                Además, si no ha llegado al 100%, se pueden sumar porcentajes adicionales (sin superar el máximo
+                permitido) si se han realizado trabajos en municipios de más de 20.000 habitantes que se han adherido a
+                la convocatoria de subvenciones.</i>
+            </div>
+            <div>
+                <i>(**) En función del trabajo realizado, se puede cobrar: 100% (calidad alta) o 66,6% (media)</i>
+            </div>
+        </div>
+    </figcaption>
+
+    <figcaption class="legend-text mt-4">
+        <h6>Leyenda de tareas</h6>
+
+        <div class="d-flex flex-column gap-2 mt-2">
+
+            <div>Tarea A1 - Hogares sin CIV.</div>
+            <div>Tarea A2 - Registros con dirección padronal y catastral diferente.</div>
+            <div>Tarea A3 - Registros del fichero de viviendas sin código vía INE.</div>
+            <div>Tarea A4 - Registros del fichero de hogares sin código vía Catastro.</div>
+            <div>Tarea A5 - Separación de hogares.</div>
+            <div>Tarea A6 - Mejora de ficheros de hogares y viviendas.</div>
+            <div>Tarea B  - Completar la información territorial.</div>
+            <div>Tarea C  - Mejora de ficheros de hogares y viviendas.</div>
+            <div></div>
+
+        </div>
+    </figcaption>
+
+    <br/>
+    <hr/>
+    <h6><i>Totales de contadores para municipios de hasta 20.000 habitantes y de más de 20.000 habitantes</i></h6>
+    <hr/>
+
+    {% if csv_data_totales_menores %}
+    <div id="valoracionTareasMenoresTotales" class="table-responsive mt-3" style="max-height: 70vh; overflow-y:auto;">
+        <table class="table table-sm table-striped table-bordered align-middle table-hover">
+            <thead class="table-light sticky-top">
+            <tr>
+                {% for header in csv_data_totales_menores[0].split(';') %}
+                    {% set h = header %}
+
+                    {# ---- Normalización de encabezados ---- #}
+                    {% if h in ["HS_1"] %}
+                        {% set h = "HS" %}
+                    {% elif h in ["HH_1", "HH_2", "HH_4", "HH_5", "HH_6"] %}
+                        {% set h = "HH" %}
+                    {% elif h == "HD_2" %}
+                        {% set h = "HD" %}
+                    {% elif h == "VC_3" %}
+                        {% set h = "VC" %}
+                    {% elif h in ["VV_3", "VV_6"] %}
+                        {% set h = "VV" %}
+                    {% elif h == "HV_4" %}
+                        {% set h = "HV" %}
+                    {% elif h == "HC_C" %}
+                        {% set h = "HC" %}
+                    {% endif %}
+
+                    <th class="text-nowrap">{{ h }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for row in csv_data_totales_menores[1:] %}
+                <tr>
+                    {% for cell in row.split(';') %}
+                    <td class="text-truncate" style="max-width: 150px;" data-value="{{ cell }}">
+                        {{ cell }}
+                    </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+    <figcaption class="legend-text mb-4">
+        <h6>Totales de contadores para municipios de hasta 20.000 habitantes.</h6>
+    </figcaption>
+    {% endif %}
+
+    {% if csv_data_totales_mayores %}
+    <div id="valoracionTareasMayoresTotales" class="table-responsive mt-3" style="max-height: 70vh; overflow-y:auto;">
+        <table class="table table-sm table-striped table-bordered align-middle table-hover">
+            <thead class="table-light sticky-top">
+            <tr>
+                {% for header in csv_data_totales_mayores[0].split(';') %}
+                    {% set h = header %}
+
+                    {# ---- Normalización de encabezados ---- #}
+                    {% if h in ["HS_1"] %}
+                        {% set h = "HS" %}
+                    {% elif h in ["HH_1", "HH_2", "HH_4", "HH_5", "HH_6"] %}
+                        {% set h = "HH" %}
+                    {% elif h == "HD_2" %}
+                        {% set h = "HD" %}
+                    {% elif h == "VC_3" %}
+                        {% set h = "VC" %}
+                    {% elif h in ["VV_3", "VV_6"] %}
+                        {% set h = "VV" %}
+                    {% elif h == "HV_4" %}
+                        {% set h = "HV" %}
+                    {% elif h == "HC_C" %}
+                        {% set h = "HC" %}
+                    {% endif %}
+
+                    <th class="text-nowrap">{{ h }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for row in csv_data_totales_mayores[1:] %}
+                <tr>
+                    {% for cell in row.split(';') %}
+                    <td class="text-truncate" style="max-width: 150px;" data-value="{{ cell }}">
+                        {{ cell }}
+                    </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+    <figcaption class="legend-text mb-4">
+        <h6>Totales de contadores para municipios de más de 20.000 habitantes.</h6>
+    </figcaption>
+    {% endif %}
+
+    {% if csv_data %}
+    <br/>
+    <hr/>
+    <h6><i>Totales de contadores para cada municipio</i></h6>
+    <hr/>
+    <div id="valoracionTareas" class="table-responsive mt-3" style="max-height: 70vh; overflow-y:auto;">
+        <table class="table table-sm table-striped table-bordered align-middle table-hover">
+            <thead class="table-light sticky-top">
+            <tr>
+                <!-- TODO {% for header in csv_data[0].split(';') %}
+                <th class="text-nowrap">{{ header }}</th>
+                {% endfor %}-->
+                {% for header in csv_data[0].split(';') %}
+                    {% set h = header %}
+                    {% if h == "HS_1" %}
+                        {% set h = "HS" %}
+                    {% elif h == "HH_1" or h == "HH_2" or h == "HH_4" or h == "HH_5" or h == "HH_6" %}
+                        {% set h = "HH" %}
+                    {% elif h == "HD_2" %}
+                        {% set h = "HD" %}
+                    {% elif h == "VC_3" %}
+                        {% set h = "VC" %}
+                    {% elif h == "VV_3" or h == "VV_6" %}
+                        {% set h = "VV" %}
+                    {% elif h == "HV_4" %}
+                        {% set h = "HV" %}
+                    {% elif h == "HC_C" %}
+                        {% set h = "HC" %}
+                    {% endif %}
+                    <th class="text-nowrap">{{ h }}</th>
+                {% endfor %}
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in csv_data[1:] %}
+            <tr>
+                {% for cell in row.split(';') %}
+                <td class="text-truncate" style="max-width: 150px;" data-value="{{ cell }}">
+                    {{ cell }}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <figcaption class="legend-text mb-4">
+        <h6>Totales de contadores para cada municipio.</h6>
+    </figcaption>
+
+    <figcaption class="legend-text mt-4">
+        <h6><i>Leyenda de cabeceras</i></h6>
+
+        <div class="d-flex flex-column gap-2 mt-2">
+            <div>CMUN - Código de municipio</div>
+            <div>A1HS - Contador del fichero A1HSppmmmA.025, registros de hogares con CIV cumplimentado o
+                indicación de
+                baja.
+            </div>
+            <div>A1VA - Contador del fichero A1VAppmmmA.025, registros de alta del fichero de alta de viviendas
+                con CIV
+                nuevo, caso de existir.
+            </div>
+            <div>A2HD - Contador del fichero A2HDppmmmA.025, registros afectados del fichero de hogares con
+                dirección
+                padronal con propuesta de moficiación de CIV.
+            </div>
+            <div>A2VA - Contador del fichero A2VAppmmmA.025, registros de alta del fichero de alta de viviendas
+                con CIV
+                nuevo, caso de existir. (Tarea A2 - Registros con dirección padronal y catastral diferente)
+            </div>
+            <div>A3VC - Contador del fichero A3VCppmmmA.025, registros afectados del fichero de viviendas con
+                dirección
+                catastral y código de vía INE o Código de Unidad Poblacional.
+            </div>
+            <div>A4HV - Contador del fichero A4HVppmmmA.025, registros afectados del fichero de hogares con
+                código de
+                vía INE y con código de vía de catastro.
+            </div>
+            <div>A5HA - Contador del fichero A5HAppmmmA.025, registros de hogares que se separan con los
+                diferentes CIV
+                propuestos que conforman cada uno de ellos.
+            </div>
+            <div>A6HM - Contador del fichero A6HMppmmmA.025, registros de hogares en donde se han realizado
+                correcciones
+                que sean diferentes a las mencionadas en los apartados A1 a A5.
+            </div>
+            <div>A6VM - Contador del fichero A6VMppmmmA.025, registros de viviendas en donde se han realizado
+                correcciones que sean diferentes a las mencionadas en los apartados A1 a A5.
+            </div>
+            <div>BVA - Contador del fichero BVAppmmmA.025, registros de alta del fichero de alta de vivinedas
+                con CIV
+                nuevo, caso de existir
+            </div>
+            <div>CHC - Contador del fichero CHCppmmmA.025, registros afectados del fichero de hogares que sean
+                establecimientos colectivos según las comprobaciones y posibles nuevas altas realizadas por los
+                Aytos.
+            </div>
+            <div></div>
+            <div>HH - Totalidad del fichero de hogares.</div>
+            <div>HC - Registros afectados del fichero de hogares que sean establecimientos colectivos según la
+                información recogida por el INE.
+            </div>
+            <div>HD - Registros afectados del fichero de hogares con dirección padronal.</div>
+            <div>HS - Registros del fichero de hogares sin CIV.</div>
+            <div>HV - Registros afectados del fichero de hogares con código de vía INE y sin código de vía de
+                catastro.
+            </div>
+            <div>VC - Registros afectados del fichero de viviendas con dirección catastral.</div>
+            <div>VV - Totalidad del fichero de viviendas.</div>
+        </div>
+    </figcaption>
+    {% endif %}
+
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/contadores.js') }}"></script>
+{% endblock %}

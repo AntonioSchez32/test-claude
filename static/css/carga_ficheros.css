@@ -1,0 +1,54 @@
+/* Tabla de tareas */
+#tasksTable {
+    display: block;
+    width: 100%;
+}
+
+#tasksTable thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+#tasksBody {
+    display: block;
+    max-height: 300px;      /* Ajusta la altura a lo que necesites */
+    overflow-y: auto;       /* Activa scroll */
+    width: 100%;
+}
+
+#tasksBody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* Botón de cerrar progreso */
+.close-progress-btn {
+    opacity: 0.65;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    line-height: 18px;
+    cursor: pointer;
+}
+
+.close-progress-btn:hover {
+    opacity: 1;
+}
+
+/* Todos los botones de acción tienen el mismo comportamiento de hover */
+.action-btn {
+    color: #000;              /* Texto blanco */
+    transition: opacity 0.2s;
+}
+
+.action-btn:hover {
+    color: #000;               /* Mantiene texto blanco */
+    opacity: 0.75;             /* Ligero efecto hover */
+    text-decoration: none;     /* Evita subrayado en <a> */
+}
+
+

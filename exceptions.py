@@ -1,0 +1,2 @@
+class NoCSVFilesFound(Exception):
+    pass

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Subida múltiple asíncrona con Bootstrap y jQuery</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+  <style>
+    #dropZone {
+      border: 2px dashed #6c757d;
+      border-radius: 10px;
+      padding: 40px;
+      text-align: center;
+      color: #6c757d;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+    #dropZone.dragover {
+      background-color: #f8f9fa;
+      border-color: #0d6efd;
+      color: #0d6efd;
+    }
+  </style>
+</head>
+<body class="p-4">
+
+  <h5 class="mb-4">Subida múltiple asíncrona con arrastre o selección</h5>
+
+  <!-- Botón de selección -->
+  <div class="mb-3">
+    <button id="btnSelectFile" type="button" class="btn btn-primary">
+      <i class="bi bi-upload"></i> Seleccionar ficheros
+    </button>
+    <input type="file" id="fileInput" multiple hidden>
+  </div>
+
+  <!-- Zona de arrastre -->
+  <div id="dropZone" class="mb-3">
+    <i class="bi bi-cloud-arrow-up fs-1"></i>
+    <p class="mt-2 mb-0">Arrastra varios archivos aquí o usa el botón superior</p>
+  </div>
+
+  <!-- Contenedor de progreso -->
+  <div id="progressContainer"></div>
+
+  <!-- Estado final -->
+  <div id="uploadStatus"></div>
+
+  <script>
+    $(function() {
+      const dropZone = $('#dropZone');
+      const fileInput = $('#fileInput');
+      const progressContainer = $('#progressContainer');
+      const uploadStatus = $('#uploadStatus');
+
+      // --- Clic en el botón para abrir selector ---
+      $('#btnSelectFile').on('click', function() {
+        fileInput.trigger('click');
+      });
+
+      // --- Selección manual ---
+      fileInput.on('change', function() {
+        if (this.files.length > 0) {
+          handleFiles(this.files);
+        }
+      });
+
+      // --- Eventos de arrastre ---
+      dropZone.on('dragover', function(e) {
+        e.preventDefault();
+        dropZone.addClass('dragover');
+      });
+
+      dropZone.on('dragleave', function(e) {
+        e.preventDefault();
+        dropZone.removeClass('dragover');
+      });
+
+      dropZone.on('drop', function(e) {
+        e.preventDefault();
+        dropZone.removeClass('dragover');
+        const files = e.originalEvent.dataTransfer.files;
+        if (files.length > 0) {
+          handleFiles(files);
+        }
+      });
+
+      // --- Manejar varios archivos ---
+      function handleFiles(files) {
+        progressContainer.empty();
+        uploadStatus.html('');
+        Array.from(files).forEach(uploadFile);
+      }
+
+      // --- Subida individual con barra ---
+      function uploadFile(file) {
+        const fileId = 'progress_' + Math.random().toString(36).substring(2, 10);
+        const fileRow = $(`
+          <div class="mb-2">
+            <div class="fw-semibold small mb-1">${file.name}</div>
+            <div class="progress" style="height: 25px;">
+              <div id="${fileId}" class="progress-bar progress-bar-striped progress-bar-animated"
+                   role="progressbar" style="width: 0%">0%</div>
+            </div>
+          </div>
+        `);
+        progressContainer.append(fileRow);
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        $.ajax({
+          xhr: function() {
+            let xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener('progress', function(e) {
+              if (e.lengthComputable) {
+                const percent = Math.round((e.loaded / e.total) * 100);
+                $('#' + fileId).css('width', percent + '%').text(percent + '%');
+              }
+            });
+            return xhr;
+          },
+          url: '/upload',   // tu endpoint Flask o similar
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function() {
+            $('#' + fileId).removeClass('progress-bar-animated')
+                           .addClass('bg-success')
+                           .text('✅ Completado');
+          },
+          error: function() {
+            $('#' + fileId).removeClass('progress-bar-animated')
+                           .addClass('bg-danger')
+                           .text('❌ Error');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
