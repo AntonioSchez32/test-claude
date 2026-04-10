@@ -1,0 +1,51 @@
+2026-04-10 08:10:03 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on https://127.0.0.1:443
+ * Running on https://10.58.21.32:443
+2026-04-10 08:10:03 [INFO] [33mPress CTRL+C to quit[0m
+2026-04-10 08:10:03 [INFO]  * Restarting with stat
+2026-04-10 08:10:05 [WARNING]  * Debugger is active!
+2026-04-10 08:10:05 [INFO]  * Debugger PIN: 112-314-712
+2026-04-10 08:43:58 [INFO] 10.58.21.32 - - [10/Apr/2026 08:43:58] "GET /login HTTP/1.1" 200 -
+2026-04-10 08:43:59 [INFO] 10.58.21.32 - - [10/Apr/2026 08:43:59] "GET /static/css/styles.css HTTP/1.1" 200 -
+2026-04-10 08:43:59 [INFO] 10.58.21.32 - - [10/Apr/2026 08:43:59] "GET /static/css/login.css HTTP/1.1" 200 -
+2026-04-10 08:43:59 [INFO] 10.58.21.32 - - [10/Apr/2026 08:43:59] "GET /static/img/logoINE.svg HTTP/1.1" 200 -
+2026-04-10 08:43:59 [INFO] 10.58.21.32 - - [10/Apr/2026 08:43:59] "GET /static/js/scripts.js HTTP/1.1" 200 -
+2026-04-10 08:43:59 [INFO] 10.58.21.32 - - [10/Apr/2026 08:43:59] "GET /static/img/favicon.ico HTTP/1.1" 200 -
+2026-04-10 08:44:40 [INFO] 10.58.21.32 - - [10/Apr/2026 08:44:40] "[32mPOST /login HTTP/1.1[0m" 302 -
+2026-04-10 08:44:41 [INFO] 10.58.21.32 - - [10/Apr/2026 08:44:41] "GET /dashboard HTTP/1.1" 200 -
+2026-04-10 08:44:41 [INFO] 10.58.21.32 - - [10/Apr/2026 08:44:41] "GET /static/css/styles.css HTTP/1.1" 200 -
+2026-04-10 08:44:41 [INFO] 10.58.21.32 - - [10/Apr/2026 08:44:41] "[36mGET /static/img/logoINE.svg HTTP/1.1[0m" 304 -
+2026-04-10 08:44:41 [INFO] 10.58.21.32 - - [10/Apr/2026 08:44:41] "GET /static/img/upload.png HTTP/1.1" 200 -
+2026-04-10 08:44:41 [INFO] 10.58.21.32 - - [10/Apr/2026 08:44:41] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+2026-04-10 08:44:41 [INFO] 10.58.21.32 - - [10/Apr/2026 08:44:41] "GET /static/img/checklist.png HTTP/1.1" 200 -
+2026-04-10 08:44:41 [INFO] 10.58.21.32 - - [10/Apr/2026 08:44:41] "GET /static/img/counter.png HTTP/1.1" 200 -
+2026-04-10 08:44:41 [INFO] 10.58.21.32 - - [10/Apr/2026 08:44:41] "GET /static/img/logo.svg HTTP/1.1" 200 -
+2026-04-10 08:45:32 [INFO] 10.58.21.32 - - [10/Apr/2026 08:45:32] "GET /carga_ficheros HTTP/1.1" 200 -
+2026-04-10 08:45:32 [INFO] 10.58.21.32 - - [10/Apr/2026 08:45:32] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-10 08:45:32 [INFO] 10.58.21.32 - - [10/Apr/2026 08:45:32] "[36mGET /static/img/logo.svg HTTP/1.1[0m" 304 -
+2026-04-10 08:45:32 [INFO] 10.58.21.32 - - [10/Apr/2026 08:45:32] "GET /static/css/carga_ficheros.css HTTP/1.1" 200 -
+2026-04-10 08:45:32 [INFO] 10.58.21.32 - - [10/Apr/2026 08:45:32] "[36mGET /static/img/logoINE.svg HTTP/1.1[0m" 304 -
+2026-04-10 08:45:32 [INFO] 10.58.21.32 - - [10/Apr/2026 08:45:32] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+2026-04-10 08:45:32 [INFO] 10.58.21.32 - - [10/Apr/2026 08:45:32] "GET /static/js/carga_ficheros.js HTTP/1.1" 200 -
+2026-04-10 08:45:33 [INFO] 10.58.21.32 - - [10/Apr/2026 08:45:33] "GET /tasks HTTP/1.1" 200 -
+2026-04-10 08:49:22 [INFO] 10.58.21.32 - - [10/Apr/2026 08:49:22] "GET /valoracion_tareas HTTP/1.1" 200 -
+2026-04-10 08:49:23 [INFO] 10.58.21.32 - - [10/Apr/2026 08:49:23] "GET /tasks HTTP/1.1" 200 -
+2026-04-10 08:49:23 [INFO] 10.58.21.32 - - [10/Apr/2026 08:49:23] "GET /consulta_contadores HTTP/1.1" 200 -
+2026-04-10 08:49:24 [INFO] 10.58.21.32 - - [10/Apr/2026 08:49:24] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-10 08:49:24 [INFO] 10.58.21.32 - - [10/Apr/2026 08:49:24] "[36mGET /static/img/logo.svg HTTP/1.1[0m" 304 -
+2026-04-10 08:49:24 [INFO] 10.58.21.32 - - [10/Apr/2026 08:49:24] "[36mGET /static/img/logoINE.svg HTTP/1.1[0m" 304 -
+2026-04-10 08:49:24 [INFO] 10.58.21.32 - - [10/Apr/2026 08:49:24] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+2026-04-10 08:49:24 [INFO] 10.58.21.32 - - [10/Apr/2026 08:49:24] "GET /static/js/contadores.js HTTP/1.1" 200 -
+2026-04-10 08:49:51 [INFO] 10.58.21.32 - - [10/Apr/2026 08:49:51] "POST /consulta_contadores HTTP/1.1" 200 -
+2026-04-10 08:49:51 [INFO] 10.58.21.32 - - [10/Apr/2026 08:49:51] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-10 08:49:51 [INFO] 10.58.21.32 - - [10/Apr/2026 08:49:51] "[36mGET /static/img/logoINE.svg HTTP/1.1[0m" 304 -
+2026-04-10 08:49:51 [INFO] 10.58.21.32 - - [10/Apr/2026 08:49:51] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+2026-04-10 08:49:51 [INFO] 10.58.21.32 - - [10/Apr/2026 08:49:51] "[36mGET /static/js/contadores.js HTTP/1.1[0m" 304 -
+2026-04-10 08:49:51 [INFO] 10.58.21.32 - - [10/Apr/2026 08:49:51] "[36mGET /static/img/logo.svg HTTP/1.1[0m" 304 -
+2026-04-10 08:50:49 [INFO] 10.58.21.32 - - [10/Apr/2026 08:50:49] "GET /valoracion_tareas HTTP/1.1" 200 -
+2026-04-10 08:50:49 [INFO] 10.58.21.32 - - [10/Apr/2026 08:50:49] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2026-04-10 08:50:49 [INFO] 10.58.21.32 - - [10/Apr/2026 08:50:49] "[36mGET /static/img/logo.svg HTTP/1.1[0m" 304 -
+2026-04-10 08:50:49 [INFO] 10.58.21.32 - - [10/Apr/2026 08:50:49] "[36mGET /static/img/logoINE.svg HTTP/1.1[0m" 304 -
+2026-04-10 08:50:49 [INFO] 10.58.21.32 - - [10/Apr/2026 08:50:49] "[36mGET /static/js/scripts.js HTTP/1.1[0m" 304 -
+2026-04-10 08:50:49 [INFO] 10.58.21.32 - - [10/Apr/2026 08:50:49] "[36mGET /static/js/contadores.js HTTP/1.1[0m" 304 -

@@ -1,0 +1,2 @@
+2026-04-10 08:44:38 [INFO] (MainProcess:Thread-8 (process_request_thread)) DN encontrado para U852378: uid=U852378,ou=Interno,ou=Personal,dc=ine,dc=es
+2026-04-10 08:44:39 [INFO] (MainProcess:Thread-8 (process_request_thread)) Login de usuario U852378 desde la IP 10.58.21.32, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0
